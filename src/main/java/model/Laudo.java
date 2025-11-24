@@ -9,15 +9,23 @@ public class Laudo {
     private String tipoLaudo; 
     private String corpoLaudo;
     private LocalDate dataOcorrencia;
-    private Perito peritoResponsavel;
+    private Perito peritoResponsavel; // Perito principal
     private String status = "Rascunho"; 
-    private List<String> evidencias = new ArrayList<>(); // TU03
+    private List<String> evidencias = new ArrayList<>(); 
     
-    private final int LIMITE_MAXIMO_CORPO = 20000; // TF04
+    // ATUALIZAÇÃO: Armazena os técnicos envolvidos no laudo
+    private List<Perito> tecnicosDePericia = new ArrayList<>(); 
+    
+    private final int LIMITE_MAXIMO_CORPO = 20000; 
 
     public Laudo(String tipoLaudo, Perito peritoResponsavel) {
         this.tipoLaudo = tipoLaudo;
         this.peritoResponsavel = peritoResponsavel;
+    }
+
+    // TF05: Validação de Status (Exclusão)
+    public boolean podeExcluir() {
+        return status.equals("Rascunho");
     }
 
     // TF02: Validação de Data (Não pode ser futura)
@@ -28,11 +36,17 @@ public class Laudo {
         this.dataOcorrencia = dataOcorrencia;
     }
     
-    // TU03: Adição de Evidências
-    public void adicionarEvidencia(String evidencia) {
-        if (evidencia != null && !evidencia.trim().isEmpty()) {
-            this.evidencias.add(evidencia);
+    // TF03: Verifica se o Perito ou Técnico tem permissão de acesso
+    public boolean temPermissaoDeAcesso(Perito perito) {
+        // 1. Se for o responsável, tem permissão
+        if (this.peritoResponsavel != null && this.peritoResponsavel.equals(perito)) {
+            return true;
         }
+        // 2. Se for um técnico de perícia, tem permissão
+        if (this.tecnicosDePericia.contains(perito)) {
+            return true;
+        }
+        return false;
     }
     
     // TF04: Validação de Limite de Caracteres
@@ -43,37 +57,26 @@ public class Laudo {
         this.corpoLaudo = corpoLaudo;
     }
     
+    // TU03: Adição de Evidências
+    public void adicionarEvidencia(String evidencia) {
+        if (evidencia != null && !evidencia.trim().isEmpty()) {
+            this.evidencias.add(evidencia);
+        }
+    }
+    
     // TU05: Converte data para extenso
     public String converterDataParaExtenso(LocalDate data) {
-        // Implementação simplificada para teste (você pode expandir para idioma pt-br real)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy");
         return data.format(formatter);
     }
-
-    // TF05: Validação de Status (Exclusão)
-    public boolean podeExcluir() {
-        return status.equals("Rascunho");
-    }
     
     // Getters
-    public String getTipoLaudo() { 
-        return tipoLaudo; 
-    }
-    
-    public String getCorpoLaudo() {
-        return corpoLaudo; 
-    }
-    
-    public String getStatus() { 
-        return status; 
-    }
-    
-    public void setStatus(String status) { 
-        this.status = status; 
-    }
-    
-    public List<String> getEvidencias() { 
-        return evidencias; 
-    }
-    
+    public String getTipoLaudo() { return tipoLaudo; }
+    public String getCorpoLaudo() { return corpoLaudo; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public List<String> getEvidencias() { return evidencias; }
+    public Perito getPeritoResponsavel() { return peritoResponsavel; }
+    // NOVO GETTER
+    public List<Perito> getTecnicosDePericia() { return tecnicosDePericia; }
 }
