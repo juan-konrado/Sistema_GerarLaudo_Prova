@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>br.com.academia</groupId>
-	<artifactId>Maven_trabalho_mauricio</artifactId>
+	<groupId>br.com.laudo</groupId>
+	<artifactId>Laudo</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>Maven_trabalho_mauricio</name>
+	<name>Laudo</name>
 
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -15,7 +15,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- JUnit 4 para testes -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -35,6 +34,13 @@
 				<target>17</target>
 			</configuration>
 		</plugin>
+        
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.3</version>
+        </plugin>
+        
 	</plugins>
 </build>
 
